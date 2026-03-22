@@ -49,3 +49,5 @@ coverage
 .cache
 tmp
 temp
+# heroui-agents-md
+.heroui-docs/

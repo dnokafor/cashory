@@ -13,9 +13,19 @@ export const auth = betterAuth({
   }),
   trustedOrigins: [
     env.CORS_ORIGIN,
-    "cashory-demo://",
+    "cashory://",
+    "cashory.exp.direct://",
+    "mybettertapp://",
     ...(env.NODE_ENV === "development"
-      ? ["exp://", "exp://**", "exp://192.168.*.*:*/**", "http://localhost:8081"]
+      ? [
+          "exp://",
+          "exp://**",
+          "exp://192.168.*.*:*/**",
+          "exp://localhost:8081",
+          "http://localhost:8081",
+          "http://localhost:*",
+          "http://192.168.*:*",
+        ]
       : []),
   ],
   emailAndPassword: {
