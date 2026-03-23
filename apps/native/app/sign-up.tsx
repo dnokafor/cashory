@@ -1,10 +1,6 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from "react";
+import SignUpTemplate from "@/components/templates/auth/signup-template";
 
 export default function signUp() {
-  return (
-    <View>
-      <Text>signUp</Text>
-    </View>
-  )
+  return <SignUpTemplate />;
 }

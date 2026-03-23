@@ -1,10 +1,6 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from "react";
+import SignInTemplate from "@/components/templates/auth/signin-template";
 
 export default function SignIn() {
-  return (
-    <View>
-      <Text>SignIn</Text>
-    </View>
-  )
+  return <SignInTemplate />;
 }

@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { usePathname, useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { useAuthSession } from "../hooks/use-auth-session";
 import { StatusBar } from "expo-status-bar";
@@ -8,14 +8,21 @@ import OnboardingTemplate from "@/components/templates/onboarding-template";
 
 export default function Index() {
   const router = useRouter();
+  const pathname = usePathname();
   const { data: session, isPending } = useAuthSession();
   const backgroundColor = useThemeColor("background");
 
   useEffect(() => {
+    if (pathname !== "/") return;
+
     if (!isPending && session?.data?.user) {
       const user = session.data.user;
 
-      //TODO: Redirect to home if user is logged in
+      if (user?.onboardingCompleted) {
+        router.replace("/");
+      } else {
+        router.replace("/onboarding");
+      }
     }
   }, [isPending, session, router]);
 

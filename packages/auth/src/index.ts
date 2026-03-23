@@ -5,6 +5,8 @@ import { env } from "@cashory-demo/env/server";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 
+const devOrigins = env.NODE_ENV === "development" ? ["*"] : [];
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -16,20 +18,39 @@ export const auth = betterAuth({
     "cashory://",
     "cashory.exp.direct://",
     "mybettertapp://",
-    ...(env.NODE_ENV === "development"
-      ? [
-          "exp://",
-          "exp://**",
-          "exp://192.168.*.*:*/**",
-          "exp://localhost:8081",
-          "http://localhost:8081",
-          "http://localhost:*",
-          "http://192.168.*:*",
-        ]
-      : []),
+    ...devOrigins,
   ],
   emailAndPassword: {
     enabled: true,
+  },
+  user: {
+    additionalFields: {
+      onboardingCompleted: {
+        type: "boolean",
+        required: false,
+        input: true,
+      },
+      country: {
+        type: "string",
+        required: false,
+        input: true,
+      },
+      phone: {
+        type: "string",
+        required: false,
+        input: true,
+      },
+      image: {
+        type: "string",
+        required: false,
+        input: true,
+      },
+      currency: {
+        type: "string",
+        required: false,
+        input: true,
+      },
+    },
   },
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
@@ -39,6 +60,7 @@ export const auth = betterAuth({
       secure: true,
       httpOnly: true,
     },
+    disableCSRFCheck: env.NODE_ENV === "development",
   },
   plugins: [expo()],
 });
