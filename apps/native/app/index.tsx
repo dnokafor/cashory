@@ -19,7 +19,7 @@ export default function Index() {
       const user = session.data.user;
 
       if (user?.onboardingCompleted) {
-        router.replace("/");
+        router.replace("/(drawer)/(tabs)");
       } else {
         router.replace("/onboarding");
       }

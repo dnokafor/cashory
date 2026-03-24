@@ -1,10 +1,11 @@
+import { UpdateProfileData } from "@/lib/api-types";
 import { authClient } from "@/lib/auth-client";
 import { queryKeys } from "@/lib/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useAuthSession() {
   return useQuery({
-    queryKey: queryKeys.auth.session,
+    queryKey: queryKeys.auth.session(),
     queryFn: () => authClient.getSession(),
     staleTime: 1000 * 60 * 5,
   });
@@ -81,6 +82,50 @@ export function useSignOut() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.auth.all });
       await queryClient.clear();
+    },
+  });
+}
+
+export function useUpdateProfile() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: UpdateProfileData) => {
+      const result = await authClient.updateUser({
+        ...data,
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message || "Failed to update profile");
+      }
+
+      return result.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.auth.session() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.user.profile() });
+    },
+  });
+}
+
+export function useCompleteOnboarding() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      const result = await authClient.updateUser({
+        onboardingCompleted: true,
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message || "Failed to complete onboarding");
+      }
+
+      return result.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.auth.session() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.user.onboarding() });
     },
   });
 }
