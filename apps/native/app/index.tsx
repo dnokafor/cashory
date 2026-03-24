@@ -10,7 +10,6 @@ export default function Index() {
   const router = useRouter();
   const pathname = usePathname();
   const { data: session, isPending } = useAuthSession();
-  const backgroundColor = useThemeColor("background");
 
   useEffect(() => {
     if (pathname !== "/") return;
