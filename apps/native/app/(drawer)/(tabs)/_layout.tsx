@@ -5,9 +5,11 @@ import { BlurTargetView } from "expo-blur";
 import { NativeTabs } from "expo-router/unstable-native-tabs";
 import { GeneralEdit } from "@/components/ui/icons/GeneralEdit";
 import CashoryAddTransactionModal from "@/components/containers/cashory-add-transaction-modal";
+import useAuthTheme from "@/hooks/use-auth-theme";
 
 export default function TabLayout() {
   const themeColorBackground = useThemeColor("background");
+  const { isDark } = useAuthTheme();
   const [isAddTransactionVisible, setAddTransactionVisible] = useState(false);
 
   return (
@@ -16,10 +18,10 @@ export default function TabLayout() {
         style={{ flex: 1, backgroundColor: themeColorBackground }}
       >
         <NativeTabs
-          iconColor={{ default: "#A3A3A3", selected: "#FFFFFF" }}
+          iconColor={{ default: isDark ? "#A3A3A3" : "#16302B", selected: isDark ? "#FFFFFF" : "#16302B" }}
           labelStyle={{
-            default: { color: "#A3A3A3", fontWeight: "600" },
-            selected: { color: "#FFFFFF", fontWeight: "600" },
+            default: { color: isDark ? "#A3A3A3" : "#16302B", fontWeight: "600" },
+            selected: { color: isDark ? "#FFFFFF" : "#16302B", fontWeight: "600" },
           }}
           blurEffect="systemMaterialDark"
         >
