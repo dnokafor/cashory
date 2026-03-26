@@ -6,6 +6,8 @@ import useAuthTheme from "@/hooks/use-auth-theme";
 import SettingsHeader from "../base/settings/settings-header";
 import { SettingsView } from "@/types/settings";
 import SettingsOverview from "../containers/settings/settings-overview";
+import AccountView from "../base/settings/account-view";
+import NotificationSettingsView from "../containers/settings/notification-settings-view";
 
 export default function ProfileSettingsTemplate() {
   const insets = useSafeAreaInsets();
@@ -52,8 +54,8 @@ export default function ProfileSettingsTemplate() {
         {currentView === "overview" && (
           <SettingsOverview onNavigate={setCurrentView} iconColor={iconColor} />
         )}
-        {/* {currentView === "account" && <AccountView isDark={isDark} />}
-        {currentView === "notification" && <NotificationSettingsView />} */}
+        {currentView === "account" && <AccountView isDark={isDark} />}
+        {currentView === "notification" && <NotificationSettingsView />}
       </ScrollView>
     </Container>
   );
