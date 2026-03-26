@@ -18,10 +18,19 @@ export default function TabLayout() {
         style={{ flex: 1, backgroundColor: themeColorBackground }}
       >
         <NativeTabs
-          iconColor={{ default: isDark ? "#A3A3A3" : "#16302B", selected: isDark ? "#FFFFFF" : "#16302B" }}
+          iconColor={{
+            default: isDark ? "#A3A3A3" : "#16302B",
+            selected: isDark ? "#FFFFFF" : "#16302B",
+          }}
           labelStyle={{
-            default: { color: isDark ? "#A3A3A3" : "#16302B", fontWeight: "600" },
-            selected: { color: isDark ? "#FFFFFF" : "#16302B", fontWeight: "600" },
+            default: {
+              color: isDark ? "#A3A3A3" : "#16302B",
+              fontWeight: "600",
+            },
+            selected: {
+              color: isDark ? "#FFFFFF" : "#16302B",
+              fontWeight: "600",
+            },
           }}
           blurEffect="systemMaterialDark"
         >
