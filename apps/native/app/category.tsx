@@ -1,10 +1,6 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import CategoryTemplate from "@/components/templates/category-template";
+import React from "react";
 
 export default function Category() {
-  return (
-    <View>
-      <Text>Category</Text>
-    </View>
-  )
+  return <CategoryTemplate />;
 }

@@ -41,6 +41,7 @@
     "expo-status-bar": "^55.0.4",
     "expo-web-browser": "~55.0.9",
     "heroui-native": "^1.0.0-rc.3",
+    "hono": "^4.12.9",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-hook-form": "^7.72.0",

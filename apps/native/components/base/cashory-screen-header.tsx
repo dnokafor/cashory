@@ -51,6 +51,11 @@ export default function CashoryScreenHeader({
           {title}
         </Text>
       </View>
+
+      {/* Right Block */}
+      {rightElement && (
+        <View className="flex-row items-center gap-x-1.5">{rightElement}</View>
+      )}
     </View>
   );
 }

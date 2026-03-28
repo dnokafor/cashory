@@ -9,4 +9,8 @@ export const queryKeys = {
     profile: () => ["user", "profile"] as const,
     onboarding: () => ["user", "onboarding"] as const,
   },
+  category: {
+    all: ["category"] as const,
+    list: (type?: "income" | "expense") => ["category", "list", type] as const,
+  },
 };

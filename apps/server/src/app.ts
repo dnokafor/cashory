@@ -3,6 +3,7 @@ import { env } from "@cashory-demo/env/server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { categoryRoutes } from "./routes/category.routes";
 
 const app = new Hono()
 .use(logger())
@@ -15,7 +16,9 @@ const app = new Hono()
       credentials: true,
     }),
 )
-.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
+.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw))
+
+.route("/api/category", categoryRoutes);
 
 app.onError((err, c) => {
     console.error("[Server Error]", err);
