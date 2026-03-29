@@ -1,6 +1,7 @@
 import { db } from "@cashory-demo/db";
 import { budget } from "@cashory-demo/db/schema/budget";
 import { category } from "@cashory-demo/db/schema/category";
+import { transaction } from "@cashory-demo/db/schema/transaction";
 import { eq, and, sql, gte, lte } from "drizzle-orm";
 
 export async function listBudgets(userId: string) {
