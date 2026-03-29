@@ -5,6 +5,7 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { categoryRoutes } from "./routes/category.routes";
 import { walletRoutes } from "./routes/wallet.routes";
+import { budgetRoutes } from "./routes/budget.routes";
 
 const app = new Hono()
   .use(logger())
@@ -20,7 +21,8 @@ const app = new Hono()
   .on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw))
 
   .route("/api/category", categoryRoutes)
-  .route("/api/wallet", walletRoutes);
+  .route("/api/wallet", walletRoutes)
+  .route("/api/budget", budgetRoutes);
 
 app.onError((err, c) => {
   console.error("[Server Error]", err);
