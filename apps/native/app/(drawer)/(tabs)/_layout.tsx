@@ -86,6 +86,7 @@ export default function TabLayout() {
           </Pressable>
         </View>
       </BlurTargetView>
+      
       <CashoryAddTransactionModal
         visible={isAddTransactionVisible}
         onClose={() => setAddTransactionVisible(false)}

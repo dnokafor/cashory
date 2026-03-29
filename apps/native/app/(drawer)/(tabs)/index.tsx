@@ -1,5 +1,13 @@
-import { View, Text, ScrollView, Image, Pressable, ActivityIndicator } from "react-native";
-import React, { useState } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  Pressable,
+  ActivityIndicator,
+  useColorScheme,
+} from "react-native";
+import React, { useMemo, useState } from "react";
 import { Container } from "@/components/container";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAuthSession } from "@/hooks/use-auth-session";
@@ -11,6 +19,9 @@ import { GeneralAlarm } from "@/components/ui/icons/GeneralAlarm";
 import CashoryCardBalance from "@/components/containers/cashory-card-balance";
 import CashoryIncomeExpense from "@/components/containers/cashory-income-expense";
 import CashoryBudgetPlanCard from "@/components/containers/cashory-budget-plan-card";
+import { useThemeColors } from "@/lib/use-theme-colors";
+import { useWallets } from "@/hooks/use-wallet";
+import { useTransactionSummary } from "@/hooks/use-transactions";
 
 const MONTH_ABBRS = [
   "Jan",
@@ -36,10 +47,47 @@ export default function Home() {
   const user = (sessionData as any)?.data?.user;
   const userName = user?.name || "User";
   const userImage = user?.image;
+  const { iconColor } = useThemeColors();
 
-  const { isDark } = useAuthTheme();
+  const monthDateRange = useMemo(() => {
+    const now = new Date();
+    const startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endDate = new Date(
+      now.getFullYear(),
+      now.getMonth() + 1,
+      0,
+      23,
+      59,
+      59,
+    );
+    return {
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+    };
+  }, []);
 
-  const iconColor = isDark ? "#FFFFFF" : "#000000";
+  const { data: summaryResponse } = useTransactionSummary(monthDateRange);
+  const summary = (summaryResponse as any)?.data as
+    | {
+        income: number;
+        expense: number;
+        balance: number;
+        transactionCount: number;
+      }
+    | undefined;
+
+  const monthlyIncome = summary?.income ?? 0;
+  const monthlyExpense = summary?.expense ?? 0;
+
+  const { data: walletsResponse } = useWallets();
+  const wallets = walletsResponse?.data ?? [];
+
+  const totalBalance = useMemo(() => {
+    return wallets.reduce(
+      (sum: number, w: any) => sum + Number(w.balance ?? 0),
+      0,
+    );
+  }, [wallets]);
 
   return (
     <Container className="p-4 md:p-6" isScrollable={false}>
@@ -99,11 +147,11 @@ export default function Home() {
 
         <View className="flex-col w-full gap-y-2.5 mb-7">
           <CashoryCardBalance
-            totalBalance={5000}
-            earned={5000}
-            spent={2000}
-            available={3000}
-            savings={5000 - 3000}
+            totalBalance={totalBalance}
+            earned={monthlyIncome}
+            spent={monthlyExpense}
+            available={totalBalance}
+            savings={monthlyIncome - monthlyExpense}
           />
           <Pressable
             className="w-full bg-brand-green-500 items-center justify-center p-4 min-h-14.25"
@@ -120,12 +168,12 @@ export default function Home() {
 
         <View className="flex-col w-full gap-y-2.5 mb-7">
           <CashoryIncomeExpense
-            incomeAmount={15000}
-            expenseAmount={6000}
+            incomeAmount={monthlyIncome}
+            expenseAmount={monthlyExpense}
             dateLabel="This month"
           />
           <CashoryBudgetPlanCard
-            month={"March"}
+            month={budgetMonth}
             onMonthChange={setBudgetMonth}
             availableCash={3000}
           />
