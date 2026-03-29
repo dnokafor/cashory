@@ -31,9 +31,14 @@ function StackLayout() {
       <Stack.Screen name="wallet" options={{ headerShown: false }} />
       <Stack.Screen name="budget" options={{ headerShown: false }} />
       <Stack.Screen name="transaction/add" options={{ headerShown: false }} />
+      <Stack.Screen name="transaction/[id]" options={{ headerShown: false }} />
+
       <Stack.Screen name="onboarding" options={{ headerShown: false }} />
 
-      <Stack.Screen name="modal" options={{ title: "Modal", presentation: "modal" }} />
+      <Stack.Screen
+        name="modal"
+        options={{ title: "Modal", presentation: "modal" }}
+      />
     </Stack>
   );
 }
