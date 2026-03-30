@@ -3,6 +3,7 @@ import { category } from "@cashory-demo/db/schema/category";
 import { transaction } from "@cashory-demo/db/schema/transaction";
 import { wallet } from "@cashory-demo/db/schema/wallet";
 import { eq, and, desc, sql, count, gte, lte } from "drizzle-orm";
+import { createNotification } from "./notification.service";
 
 export async function listTransactions(
   userId: string,
@@ -152,12 +153,13 @@ export async function createTransaction(
     .where(and(eq(wallet.id, data.walletId), eq(wallet.userId, userId)));
 
   // Generate an automatic notification
-//   const capitalizedType = data.type.charAt(0).toUpperCase() + data.type.slice(1);
-//   await createNotification(userId, {
-//     title: `New ${capitalizedType} Added`,
-//     description: `You added $${data.amount.toLocaleString()} for "${data.description}"`,
-//     type: data.type === "income" ? "success" : "alert",
-//   }).catch(err => console.error("Failed to create notification:", err));
+  const capitalizedType =
+    data.type.charAt(0).toUpperCase() + data.type.slice(1);
+  await createNotification(userId, {
+    title: `New ${capitalizedType} Added`,
+    description: `You added $${data.amount.toLocaleString()} for "${data.description}"`,
+    type: data.type === "income" ? "success" : "alert",
+  }).catch((err) => console.error("Failed to create notification:", err));
 
   return { ...result, amount: Number(result?.amount) };
 }
