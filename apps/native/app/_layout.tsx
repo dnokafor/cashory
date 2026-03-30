@@ -33,6 +33,8 @@ function StackLayout() {
       <Stack.Screen name="transaction/add" options={{ headerShown: false }} />
       <Stack.Screen name="transaction/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="notifications" options={{ headerShown: false }} />
+      <Stack.Screen name="invoice/add" options={{ headerShown: false }} />
+      <Stack.Screen name="invoice/[id]" options={{ headerShown: false }} />
 
       <Stack.Screen name="onboarding" options={{ headerShown: false }} />
 

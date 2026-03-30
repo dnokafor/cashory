@@ -25,7 +25,7 @@ export const FormDateField: React.FC<FormDateFieldProps> = ({
   const { iconColor } = useThemeColors();
 
   return (
-    <View className="flex-1 flex-col gap-y-2.5">
+    <View className="w-full flex-col gap-y-2.5">
       <FormFieldLabel>{label}</FormFieldLabel>
       <Pressable
         onPress={onPress}

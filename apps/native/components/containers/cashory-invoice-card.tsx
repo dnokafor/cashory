@@ -1,8 +1,9 @@
 import { View, Text, StyleProp, ViewStyle, Pressable } from "react-native";
 import React from "react";
 import useAuthTheme from "@/hooks/use-auth-theme";
-import { Card } from "heroui-native";
+import { Card, Chip } from "heroui-native";
 import { GeneralWallet } from "../ui/icons/GeneralWallet";
+import { ONBOARDING_FONT_FAMILY } from "@/lib/const/onboarding-typography";
 
 export type InvoiceStatus = "Paid" | "Due" | "Overdue" | "Cancel";
 
@@ -102,16 +103,25 @@ export default function CashoryInvoiceCard({
               : amount}
           </Card.Title>
 
-          <View
-            className={`h-5.5 min-w-15 px-4 items-center justify-center rounded-[10px] ${statusBg}`}
+          <Chip
+            size="sm"
+            variant="primary"
+            color={
+              status === "Paid"
+                ? "success"
+                : status === "Due"
+                  ? "warning"
+                  : "danger"
+            }
+            className="min-w-15 items-center justify-center"
           >
-            <Card.Title
-              className={`text-body-sm leading-3.75 ${statusText}`}
-              style={{ fontFamily: "PlusJakartaSans_700Bold" }}
+            <Chip.Label
+              className="text-body-sm leading-3.75 text-brand-white"
+              style={{ fontFamily: ONBOARDING_FONT_FAMILY.bold }}
             >
               {status}
-            </Card.Title>
-          </View>
+            </Chip.Label>
+          </Chip>
         </View>
       </Card>
     </Pressable>

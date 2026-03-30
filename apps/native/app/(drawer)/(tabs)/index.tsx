@@ -5,15 +5,13 @@ import {
   Image,
   Pressable,
   ActivityIndicator,
-  useColorScheme,
 } from "react-native";
 import React, { useMemo, useState } from "react";
 import { Container } from "@/components/container";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { ONBOARDING_FONT_FAMILY } from "@/lib/const/onboarding-typography";
-import { Link } from "expo-router";
-import useAuthTheme from "@/hooks/use-auth-theme";
+import { Link, router } from "expo-router";
 import { GeneralSearch } from "@/components/ui/icons/GeneralSearch";
 import { GeneralAlarm } from "@/components/ui/icons/GeneralAlarm";
 import CashoryCardBalance from "@/components/containers/cashory-card-balance";
@@ -22,6 +20,23 @@ import CashoryBudgetPlanCard from "@/components/containers/cashory-budget-plan-c
 import { useThemeColors } from "@/lib/use-theme-colors";
 import { useWallets } from "@/hooks/use-wallet";
 import { useTransactionSummary } from "@/hooks/use-transactions";
+import { useInvoices } from "@/hooks/use-invoice";
+import CashoryInvoiceCard from "@/components/containers/cashory-invoice-card";
+import { format } from "date-fns";
+import { InvoiceStatus } from "@/types/invoice";
+
+const mapStatus = (status: string): InvoiceStatus => {
+  switch (status) {
+    case "paid":
+      return "Paid";
+    case "overdue":
+      return "Overdue";
+    case "cancelled":
+      return "Cancel";
+    default:
+      return "Due";
+  }
+};
 
 const MONTH_ABBRS = [
   "Jan",
@@ -107,7 +122,13 @@ export default function Home() {
   const budgetSummary = budgetSummaryResponse?.data as
     | { income: number; expense: number; balance: number }
     | undefined;
-  const budgetAvailable = (budgetSummary?.income ?? 0) - (budgetSummary?.expense ?? 0);
+  const budgetAvailable =
+    (budgetSummary?.income ?? 0) - (budgetSummary?.expense ?? 0);
+
+  const { data: invoicesResponse, isLoading: isLoadingInvoices } = useInvoices({
+    limit: 3,
+  });
+  const recentInvoices = invoicesResponse?.data ?? [];
 
   return (
     <Container className="p-4 md:p-6" isScrollable={false}>
@@ -220,7 +241,7 @@ export default function Home() {
             </Link>
           </View>
 
-          {/* {isLoadingInvoices ? (
+          {isLoadingInvoices ? (
             <View className="items-center py-6">
               <ActivityIndicator size="small" />
             </View>
@@ -238,13 +259,13 @@ export default function Home() {
               <CashoryInvoiceCard
                 key={inv.id}
                 title={inv.clientName || inv.invoiceNumber}
-                datetime={formatInvoiceDate(inv.createdAt)}
+                datetime={format(new Date(inv.createdAt), "yyyy-MM-dd HH:mm")}
                 amount={inv.total}
                 status={mapStatus(inv.status)}
-                onPress={() => router.push(`/invoices/${inv.id}`)}
+                onPress={() => router.push(`/invoice/${inv.id}`)}
               />
             ))
-          )} */}
+          )}
         </View>
       </ScrollView>
     </Container>

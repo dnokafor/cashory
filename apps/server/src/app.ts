@@ -8,6 +8,7 @@ import { walletRoutes } from "./routes/wallet.routes";
 import { budgetRoutes } from "./routes/budget.routes";
 import { transactionRoutes } from "./routes/transaction.routes";
 import { notificationRoutes } from "./routes/notification.routes";
+import { invoiceRoutes } from "./routes/invoice.routes";
 
 const app = new Hono()
   .use(logger())
@@ -25,6 +26,7 @@ const app = new Hono()
   .route("/api/category", categoryRoutes)
   .route("/api/wallet", walletRoutes)
   .route("/api/budget", budgetRoutes)
+  .route("/api/invoice", invoiceRoutes)
   .route("/api/transaction", transactionRoutes)
   .route("/api/notification", notificationRoutes);
 

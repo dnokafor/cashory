@@ -18,7 +18,7 @@ export default function CashoryScreenHeader({
   rightElement,
   showBack = true,
   onBack,
-  className = "mb-8",
+  className,
 }: CashoryScreenHeaderProps) {
   const { isDark } = useAuthTheme();
   return (

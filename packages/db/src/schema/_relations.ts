@@ -5,6 +5,7 @@ import { wallet } from "./wallet";
 import { transaction } from "./transaction";
 import { budget } from "./budget";
 import { notification } from "./notification";
+import { invoice, invoiceItem } from "./invoice";
 
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
@@ -66,6 +67,14 @@ export const budgetRelations = relations(budget, ({ one }) => ({
     fields: [budget.categoryId],
     references: [category.id],
   }),
+}));
+
+export const invoiceRelations = relations(invoice, ({ one, many }) => ({
+  user: one(user, {
+    fields: [invoice.userId],
+    references: [user.id],
+  }),
+  items: many(invoiceItem),
 }));
 
 export const notificationRelations = relations(notification, ({ one }) => ({
