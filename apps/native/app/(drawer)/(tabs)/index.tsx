@@ -89,6 +89,26 @@ export default function Home() {
     );
   }, [wallets]);
 
+  const budgetDateRange = useMemo(() => {
+    const monthIndex = MONTH_ABBRS.indexOf(budgetMonth);
+    if (monthIndex === -1) return undefined;
+
+    const year = new Date().getFullYear();
+    const startDate = new Date(year, monthIndex, 1);
+    const endDate = new Date(year, monthIndex + 1, 0, 23, 59, 59);
+    return {
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+    };
+  }, [budgetMonth]);
+
+  const { data: budgetSummaryResponse } =
+    useTransactionSummary(budgetDateRange);
+  const budgetSummary = budgetSummaryResponse?.data as
+    | { income: number; expense: number; balance: number }
+    | undefined;
+  const budgetAvailable = (budgetSummary?.income ?? 0) - (budgetSummary?.expense ?? 0);
+
   return (
     <Container className="p-4 md:p-6" isScrollable={false}>
       <ScrollView
@@ -175,7 +195,7 @@ export default function Home() {
           <CashoryBudgetPlanCard
             month={budgetMonth}
             onMonthChange={setBudgetMonth}
-            availableCash={3000}
+            availableCash={budgetAvailable}
           />
         </View>
 
